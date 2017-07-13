@@ -8,6 +8,7 @@ ARG uid=1000
 ARG gid=1000
 ARG http_port=8080
 ARG agent_port=50000
+ARG docker_gid=130
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
@@ -16,7 +17,8 @@ ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
 # If you bind mount a volume from the host or a data container, 
 # ensure you use the same uid
 RUN addgroup -g ${gid} ${group} \
-    && adduser -h "$JENKINS_HOME" -u ${uid} -G ${group} -s /bin/bash -D ${user}
+    && adduser -h "$JENKINS_HOME" -u ${uid} -G ${group} -s /bin/bash -D ${user} \
+    && sed -i -e "s:^\(docker.*\)\:\([0-9]\+\)\:\(,\?\)\(.*\):\1\:${docker_gid}\:\3\4\3${user}:" /etc/group
 
 # Jenkins home directory is a volume, so configuration and build history 
 # can be persisted and survive image upgrades
