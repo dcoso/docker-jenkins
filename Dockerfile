@@ -1,6 +1,6 @@
 FROM openjdk:8u121-jdk-alpine
 
-RUN apk add --no-cache git openssh-client curl unzip bash ttf-dejavu coreutils
+RUN apk add --no-cache git openssh-client curl unzip bash ttf-dejavu coreutils docker
 
 ARG user=jenkins
 ARG group=jenkins
